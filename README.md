@@ -28,7 +28,7 @@ ResumeGPT is a modern web app that helps users build professional resumes using 
 
 ## 🚀 Live Demo
 
-> [🔗 Click to open (if deployed)](https://Zeroasta637.github.io/resumeGPT)
+> [🔗 Click to open ](https://Zeroasta637.github.io/resumeGPT)
 
 ---
 
