@@ -12,9 +12,9 @@ interface ResumePreviewProps {
 
 const ResumePreview = ({ personalInfo, summary, experience, education, skills }: ResumePreviewProps) => {
   return (
-    <div id="resume-preview" className="bg-white p-8 max-w-4xl mx-auto shadow-lg">
+    <div id="resume-preview" className="bg-white p-8 max-w-4xl mx-auto shadow-lg print:shadow-none print:p-6">
       {/* Header */}
-      <div className="text-center mb-8 pb-6 border-b-2 border-blue-600">
+      <div className="text-center mb-8 pb-6 border-b-2 border-blue-600 print:border-gray-400">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           {personalInfo.fullName || 'Your Name'}
         </h1>
@@ -49,7 +49,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
       {/* Professional Summary */}
       {summary && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-3 border-b border-gray-300 pb-1">
+          <h2 className="text-2xl font-bold text-blue-600 mb-3 border-b border-gray-300 pb-1 print:text-gray-800">
             Professional Summary
           </h2>
           <p className="text-gray-700 leading-relaxed">{summary}</p>
@@ -59,7 +59,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
       {/* Experience */}
       {experience.length > 0 && experience.some(exp => exp.jobTitle || exp.company) && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1">
+          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1 print:text-gray-800">
             Work Experience
           </h2>
           <div className="space-y-6">
@@ -71,7 +71,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
                       <h3 className="text-xl font-semibold text-gray-900">
                         {exp.jobTitle || 'Position'}
                       </h3>
-                      <p className="text-lg text-blue-600 font-medium">
+                      <p className="text-lg text-blue-600 font-medium print:text-gray-700">
                         {exp.company || 'Company'} {exp.location && `• ${exp.location}`}
                       </p>
                     </div>
@@ -94,7 +94,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
       {/* Education */}
       {education.length > 0 && education.some(edu => edu.degree || edu.school) && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1">
+          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1 print:text-gray-800">
             Education
           </h2>
           <div className="space-y-4">
@@ -106,7 +106,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
                       <h3 className="text-lg font-semibold text-gray-900">
                         {edu.degree || 'Degree'}
                       </h3>
-                      <p className="text-blue-600 font-medium">
+                      <p className="text-blue-600 font-medium print:text-gray-700">
                         {edu.school || 'School'} {edu.location && `• ${edu.location}`}
                       </p>
                     </div>
@@ -126,7 +126,7 @@ const ResumePreview = ({ personalInfo, summary, experience, education, skills }:
       {/* Skills */}
       {(skills.technical.some(skill => skill.trim()) || skills.soft.some(skill => skill.trim())) && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1">
+          <h2 className="text-2xl font-bold text-blue-600 mb-4 border-b border-gray-300 pb-1 print:text-gray-800">
             Skills
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -58,20 +58,14 @@ function App() {
     soft: [],
   });
 
-  const downloadResume = () => {
-    const element = document.getElementById("resume-preview");
-    if (element && window.html2pdf) {
-      const opt = {
-        margin: 0.5,
-        filename: 'resume.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      // @ts-ignore
-      window.html2pdf().set(opt).from(element).save();
-    } else {
-      alert('PDF generation is not available. Please make sure the page is fully loaded.');
+  const downloadResume = async () => {
+    try {
+      const fullName = personalInfo.fullName || 'resume';
+      const filename = `${fullName.replace(/\s+/g, '_').toLowerCase()}_resume.pdf`;
+      await generatePDF('resume-preview', filename);
+    } catch (error) {
+      console.error('Failed to generate PDF:', error);
+      alert('Failed to generate PDF. Please try again.');
     }
   };
 
