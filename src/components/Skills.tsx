@@ -1,39 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Award, Plus, X } from 'lucide-react';
 import FormSection from './FormSection';
 import Input from './Input';
+import { SkillsData } from '../App';
 
-const Skills = () => {
-  const [technicalSkills, setTechnicalSkills] = useState<string[]>(['']);
-  const [softSkills, setSoftSkills] = useState<string[]>(['']);
+interface SkillsProps {
+  data: SkillsData;
+  onChange: (data: SkillsData) => void;
+}
 
+const Skills = ({ data, onChange }: SkillsProps) => {
   const addSkill = (type: 'technical' | 'soft') => {
-    if (type === 'technical') {
-      setTechnicalSkills([...technicalSkills, '']);
-    } else {
-      setSoftSkills([...softSkills, '']);
-    }
+    const updated = { ...data };
+    updated[type] = [...updated[type], ''];
+    onChange(updated);
   };
 
   const removeSkill = (type: 'technical' | 'soft', index: number) => {
-    if (type === 'technical' && technicalSkills.length > 1) {
-      setTechnicalSkills(technicalSkills.filter((_, i) => i !== index));
-    } else if (type === 'soft' && softSkills.length > 1) {
-      setSoftSkills(softSkills.filter((_, i) => i !== index));
+    const updated = { ...data };
+    if (updated[type].length > 1) {
+      updated[type] = updated[type].filter((_, i) => i !== index);
+      onChange(updated);
     }
   };
 
   const updateSkill = (type: 'technical' | 'soft', index: number, value: string) => {
-    if (type === 'technical') {
-      const updated = [...technicalSkills];
-      updated[index] = value;
-      setTechnicalSkills(updated);
-    } else {
-      const updated = [...softSkills];
-      updated[index] = value;
-      setSoftSkills(updated);
-    }
+    const updated = { ...data };
+    updated[type][index] = value;
+    onChange(updated);
   };
+
+  // Initialize with empty arrays if no data
+  if (data.technical.length === 0 && data.soft.length === 0) {
+    onChange({
+      technical: [''],
+      soft: [''],
+    });
+    return null;
+  }
 
   const renderSkillSection = (
     title: string,
@@ -42,7 +46,10 @@ const Skills = () => {
     placeholder: string
   ) => (
     <div className="space-y-4">
-      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
+      <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+        <div className={`w-3 h-3 rounded-full ${type === 'technical' ? 'bg-blue-500' : 'bg-green-500'}`}></div>
+        {title}
+      </h3>
       <div className="space-y-3">
         {skills.map((skill, index) => (
           <div key={index} className="flex items-center space-x-3">
@@ -57,7 +64,7 @@ const Skills = () => {
             {skills.length > 1 && (
               <button
                 onClick={() => removeSkill(type, index)}
-                className="mt-2 bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg transition-colors"
+                className="mt-2 bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg transition-colors shadow-sm"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -66,7 +73,7 @@ const Skills = () => {
         ))}
         <button
           onClick={() => addSkill(type)}
-          className="flex items-center space-x-2 text-teal-600 hover:text-teal-700 font-medium transition-colors"
+          className="flex items-center space-x-2 text-teal-600 hover:text-teal-700 font-medium transition-colors hover:bg-teal-50 px-3 py-2 rounded-lg"
         >
           <Plus className="h-4 w-4" />
           <span>Add {title.toLowerCase().slice(0, -1)}</span>
@@ -77,16 +84,16 @@ const Skills = () => {
 
   return (
     <FormSection title="Skills" icon={<Award className="h-6 w-6" />}>
-      <div className="space-y-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {renderSkillSection(
           'Technical Skills',
-          technicalSkills,
+          data.technical,
           'technical',
           'e.g., JavaScript, React, Node.js'
         )}
         {renderSkillSection(
           'Soft Skills',
-          softSkills,
+          data.soft,
           'soft',
           'e.g., Leadership, Communication, Problem Solving'
         )}

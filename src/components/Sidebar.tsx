@@ -1,30 +1,28 @@
 import React from 'react';
-import { Sparkles, Eye, Download, Menu, X } from 'lucide-react';
+import { Sparkles, Eye, Download, Menu, X, Edit3 } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
+  onPreview: () => void;
+  onDownload: () => void;
+  onGenerateSummary: () => void;
+  showPreview: boolean;
 }
 
-const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
+const Sidebar = ({ isOpen, onToggle, onPreview, onDownload, onGenerateSummary, showPreview }: SidebarProps) => {
   const buttons = [
     {
-      icon: Sparkles,
-      label: 'Generate Summary',
+      icon: showPreview ? Edit3 : Eye,
+      label: showPreview ? 'Edit Resume' : 'Preview Resume',
       variant: 'primary' as const,
-      onClick: () => console.log('Generate Summary clicked'),
-    },
-    {
-      icon: Eye,
-      label: 'Preview Resume',
-      variant: 'secondary' as const,
-      onClick: () => console.log('Preview Resume clicked'),
+      onClick: onPreview,
     },
     {
       icon: Download,
       label: 'Download PDF',
       variant: 'secondary' as const,
-      onClick: () => console.log('Download PDF clicked'),
+      onClick: onDownload,
     },
   ];
 
@@ -33,7 +31,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       {/* Mobile menu button */}
       <button
         onClick={onToggle}
-        className="lg:hidden fixed top-4 right-4 z-50 bg-teal-500 text-white p-2 rounded-lg shadow-lg hover:bg-teal-600 transition-colors"
+        className="lg:hidden fixed top-4 right-4 z-50 bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
       >
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
@@ -41,7 +39,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 backdrop-blur-sm"
           onClick={onToggle}
         />
       )}
@@ -49,14 +47,20 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:sticky top-0 right-0 h-screen w-80 bg-white shadow-xl z-40
-          transform transition-transform duration-300 ease-in-out
+          fixed lg:sticky top-0 right-0 h-screen w-80 bg-white shadow-2xl z-40
+          transform transition-all duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
-          lg:shadow-lg border-l lg:border-l-0 lg:border-r border-gray-100
+          border-l border-gray-200
         `}
       >
-        <div className="p-6 pt-16 lg:pt-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Actions</h2>
+        <div className="p-6 pt-16 lg:pt-6 h-full bg-gradient-to-b from-white to-gray-50">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+              <Sparkles className="h-5 w-5 text-white" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
+          </div>
+          
           <div className="space-y-4">
             {buttons.map((button, index) => {
               const Icon = button.icon;
@@ -67,12 +71,12 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
                   key={index}
                   onClick={button.onClick}
                   className={`
-                    w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium
-                    transition-all duration-200 transform hover:scale-105
+                    w-full flex items-center space-x-3 px-6 py-4 rounded-xl font-semibold
+                    transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg
                     ${
                       isPrimary
-                        ? 'bg-teal-500 hover:bg-teal-600 text-white shadow-md hover:shadow-lg'
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-200 hover:border-gray-300'
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'
+                        : 'bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-200 hover:border-gray-300'
                     }
                   `}
                 >
@@ -83,10 +87,32 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             })}
           </div>
 
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
-            <h3 className="text-sm font-semibold text-blue-900 mb-2">Pro Tip</h3>
-            <p className="text-sm text-blue-700">
-              Use "Generate Summary" to create a compelling professional summary based on your experience.
+          <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-white" />
+              </div>
+              <h3 className="text-sm font-bold text-blue-900">Pro Tips</h3>
+            </div>
+            <ul className="text-sm text-blue-700 space-y-2">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-500 mt-1">•</span>
+                <span>Use the AI generator for professional summaries</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-500 mt-1">•</span>
+                <span>Preview your resume before downloading</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-500 mt-1">•</span>
+                <span>Use bullet points for achievements</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-xl border border-green-200">
+            <p className="text-sm text-green-700 text-center">
+              <strong>✨ Your resume is automatically saved as you type!</strong>
             </p>
           </div>
         </div>
